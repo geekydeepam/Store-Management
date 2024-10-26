@@ -1,0 +1,35 @@
+﻿@model   IEnumerable<Store_Management.Models.ProductType>
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>List</h2>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>
+                Product ID
+            </td>
+            <td>
+                Description
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.pk_prodtypeID
+                </td>
+                <td>
+                    @item.Discription
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
