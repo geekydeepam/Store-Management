@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Store_Management.Common.ProductMst>
+﻿@model IEnumerable<Store_Management.DTO.ProductListDTO>
 
 @{
     ViewBag.Title = "ProducList";
@@ -8,7 +8,7 @@
 <h2>ProducList</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "AddUpdateProduct")
 </p>
 <table class="table">
     <tr>
@@ -16,7 +16,7 @@
             @Html.DisplayNameFor(model => model.pk_ProductID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.fk_ProductID)
+            @Html.DisplayNameFor(model => model.ProductType)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ProductName)
@@ -39,7 +39,7 @@
             @Html.DisplayFor(modelItem => item.pk_ProductID)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.fk_ProductID)
+            @Html.DisplayFor(modelItem => item.ProductType)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ProductName)

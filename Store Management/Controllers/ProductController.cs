@@ -35,7 +35,18 @@ namespace Store_Management.Controllers
 
         public ActionResult ProducList()
         {
-            return View(context.ProductMsts.ToList());
+            var productList=from a in context.ProductMsts
+                            join b in context.ProductTypeListMst on a.fk_ProductID equals b.pk_ProductID
+                            select  new ProductListDTO
+                            {
+                                pk_ProductID=a.pk_ProductID,
+                                ProductType=b.Description,
+                                ProductName=a.ProductName,
+                                OriginalPrice=a.OriginalPrice,
+                                SellingPrice=a.SellingPrice,
+                                ProductQuantity=a.ProductQuantity
+                            };
+            return View(productList);
         }
     }
 }
