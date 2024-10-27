@@ -13,11 +13,9 @@ namespace Store_Management
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "GetParticularProduct",
-                url: "ProductType/Product/{minID}/{maxID}",
-                defaults : new { controller = "ProductType", action = "Product" }
-                );
+            routes.MapMvcAttributeRoutes();
+
+            
 
             routes.MapRoute(
                 name: "Default",

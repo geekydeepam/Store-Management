@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Store_Management.Common;
 
 namespace Store_Management.Models
 {
@@ -29,5 +30,8 @@ namespace Store_Management.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<ProductType> ProductTypes { get; set; }
+        public  DbSet<ProductMst>  ProductMsts{ get; set; }
     }
 }

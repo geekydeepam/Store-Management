@@ -168,17 +168,29 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Common\ProductMst.cs" />
+    <Compile Include="Common\ProductType.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\ProductTypeController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ProducttypeController.cs" />
+    <Compile Include="DTO\ProductMstDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202410261146305_InitialCreate.cs" />
+    <Compile Include="Migrations\202410261146305_InitialCreate.Designer.cs">
+      <DependentUpon>202410261146305_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202410271100384_AddProductMst.cs" />
+    <Compile Include="Migrations\202410271100384_AddProductMst.Designer.cs">
+      <DependentUpon>202410271100384_AddProductMst.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\ProductType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -253,7 +265,10 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\ProductType\List.cshtml" />
+    <Content Include="Views\ProductType\CreateUpdateForm.cshtml" />
+    <Content Include="Views\ProductType\ProductTypeList.cshtml" />
+    <Content Include="Views\Product\AddUpdateProduct.cshtml" />
+    <Content Include="Views\Product\ProducList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -284,6 +299,14 @@
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\jquery-3.7.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.0.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202410261146305_InitialCreate.resx">
+      <DependentUpon>202410261146305_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202410271100384_AddProductMst.resx">
+      <DependentUpon>202410271100384_AddProductMst.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

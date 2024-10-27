@@ -1,0 +1,21 @@
+﻿@model Store_Management.Common.ProductType
+
+
+@using (Html.BeginForm("Create", "Producttype"))
+{
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(a => a.Description, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(a => a.Description, new { htmlAttribute = new { @class = "form-control" } })
+                        </div>
+                    </div>
+
+
+                    <div class="form-control-sm">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+ }
