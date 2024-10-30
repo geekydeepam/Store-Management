@@ -7,57 +7,69 @@
 
 <h2>ProducList</h2>
 
+
+@section scripts
+    {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tblProduct').DataTable(
+                {
+
+                });
+        });
+    </script>
+}
 <p>
     @Html.ActionLink("Create New", "AddUpdateProduct")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.pk_ProductID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ProductType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ProductName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OriginalPrice)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SellingPrice)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ProductQuantity)
-        </th>
-        <th></th>
-    </tr>
+<table class="table" id="tblProduct">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OriginalPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SellingPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductQuantity)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OriginalPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SellingPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductQuantity)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.pk_ProductID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.pk_ProductID })
+                </td>
+            </tr>
+        }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.pk_ProductID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProductType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProductName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OriginalPrice)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SellingPrice)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProductQuantity)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.pk_ProductID  }) |
-            @Html.ActionLink("Delete", "Delete", new {  id=item.pk_ProductID    })
-        </td>
-    </tr>
-}
+    </tbody>
 
 </table>
