@@ -19,6 +19,8 @@ namespace Store_Management.Common
 
         public double SellingPrice { get; set; }    
 
-        public double ProductQuantity { get; set; } 
+        public double ProductQuantity { get; set; }
+
+        public string Username { get; set; }
     }
 }

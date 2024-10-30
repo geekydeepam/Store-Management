@@ -8,7 +8,12 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace Store_Management.Controllers
+
+
+
 {
+
+    [Authorize]
     public class ProductController : Controller
     {
         ApplicationDbContext context = new ApplicationDbContext();
@@ -30,6 +35,7 @@ namespace Store_Management.Controllers
         {
             if(ptDTO.ProductMst.pk_ProductID==0)
             {
+                ptDTO.ProductMst.Username= User.Identity.Name;
                 context.ProductMsts.Add(ptDTO.ProductMst);
                 context.SaveChanges();
             }
@@ -37,7 +43,7 @@ namespace Store_Management.Controllers
             {
                 var dataInDb = context.ProductMsts.FirstOrDefault(a => a.pk_ProductID == ptDTO.ProductMst.pk_ProductID);
 
-                
+                dataInDb.fk_ProductID = ptDTO.ProductMst.fk_ProductID;
                 dataInDb.ProductName = ptDTO.ProductMst.ProductName;
                 dataInDb.ProductQuantity = ptDTO.ProductMst.ProductQuantity;
                 dataInDb.OriginalPrice = ptDTO.ProductMst.OriginalPrice;
@@ -50,18 +56,38 @@ namespace Store_Management.Controllers
 
         public ActionResult ProductList()
         {
-            var productList=from a in context.ProductMsts
-                            join b in context.ProductTypes on a.fk_ProductID equals b.pk_prodtypeid
-                            select  new ProductListDTO
-                            {
-                                pk_ProductID=a.pk_ProductID,
-                                ProductType=b.Description,
-                                ProductName=a.ProductName,
-                                OriginalPrice=a.OriginalPrice,
-                                SellingPrice=a.SellingPrice,
-                                ProductQuantity=a.ProductQuantity
-                            };
-            return View(productList);
+            IEnumerable<ProductListDTO> list = new List<ProductListDTO>();
+            if(User.IsInRole("Admin"))
+            {
+
+                 list = from a in context.ProductMsts
+                                  join b in context.ProductTypes on a.fk_ProductID equals b.pk_prodtypeid
+                                  select new ProductListDTO
+                                  {
+                                      pk_ProductID = a.pk_ProductID,
+                                      ProductType = b.Description,
+                                      ProductName = a.ProductName,
+                                      OriginalPrice = a.OriginalPrice,
+                                      SellingPrice = a.SellingPrice,
+                                      ProductQuantity = a.ProductQuantity
+                                  };
+            }
+            else
+            {
+                list = from a in context.ProductMsts
+                       join b in context.ProductTypes on a.fk_ProductID equals b.pk_prodtypeid
+                       where a.Username==User.Identity.Name
+                       select new ProductListDTO
+                       {
+                           pk_ProductID = a.pk_ProductID,
+                           ProductType = b.Description,
+                           ProductName = a.ProductName,
+                           OriginalPrice = a.OriginalPrice,
+                           SellingPrice = a.SellingPrice,
+                           ProductQuantity = a.ProductQuantity
+                       };
+            }
+            return View(list);
         }
 
         public ActionResult Edit(int id)

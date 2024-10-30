@@ -34,6 +34,7 @@ namespace Store_Management.Models
         public DbSet<ProductType> ProductTypes { get; set; }
         public  DbSet<ProductMst>  ProductMsts{ get; set; }
         public DbSet<ModuleMst> ModuleMsts { get; set; }
+        public DbSet<CustomerMst> CustomerMsts  { get; set; }
 
 
     }

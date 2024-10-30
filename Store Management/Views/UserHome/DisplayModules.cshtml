@@ -7,32 +7,32 @@
 
 <h2>DisplayModules</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 
 
-@foreach (var item in Model) 
-{
-    <div class="col-md-4" style="margin-top:50px">
-        <div class="card">
-            <div class="card-header">
-                <header class="container text-dark">
-                    <h5 class="card-title">@item.ModuleName</h5>
-                </header>
-            </div>
-            <div class="card-body" style="height:250px">
-                <div class="col-12 justify-content-center d-flex align-items-center" style="box-sizing:border-box">
-                    <img src="@Html.Raw(item.ImageUrl)" style="width:fit-content;border-radius:25%;" />
+<div class="d-flex justify-content-md-start gap-5">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4" style="margin-top:50px">
+            <div class="card">
+                <div class="card-header">
+                    <header class="container text-dark">
+                        <h5 class="card-title">@item.ModuleName</h5>
+                    </header>
                 </div>
-            </div>
-            
-                @Html.ActionLink(item.ModuleName, item.ActionName, item.ControllerName, null, new { @class = "btn btn-secondary card-footer" })
-            
+                <div class="card-body" style="height:250px">
+                    <div class="col-12 justify-content-center d-flex align-items-center" style="box-sizing:border-box">
+                        <img src="@Html.Raw(item.ImageUrl)" style="width:fit-content;border-radius:25%;" />
+                    </div>
+                </div>
 
+                @Html.ActionLink(item.ModuleName, item.ActionName, item.ControllerName, null, new { @class = "btn btn-secondary card-footer" })
+
+
+            </div>
         </div>
-    </div>
-   
-}
+
+    }
+</div>
+
 
 

@@ -15,7 +15,6 @@ namespace Store_Management.Controllers
         // GET: Module
         public ActionResult ModuleList()
         {
-            
             return View(context.ModuleMsts.ToList());
         }
 
