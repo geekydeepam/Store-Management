@@ -28,15 +28,30 @@ namespace Store_Management.Controllers
         [HttpPost]
         public ActionResult AddUpdateProduct(ProductMstDTO ptDTO)
         {
-            context.ProductMsts.Add(ptDTO.ProductMst);
-            context.SaveChangesAsync();
-            return RedirectToAction("ProducList");
+            if(ptDTO.ProductMst.pk_ProductID==0)
+            {
+                context.ProductMsts.Add(ptDTO.ProductMst);
+                context.SaveChanges();
+            }
+            else
+            {
+                var dataInDb = context.ProductMsts.FirstOrDefault(a => a.pk_ProductID == ptDTO.ProductMst.pk_ProductID);
+
+                
+                dataInDb.ProductName = ptDTO.ProductMst.ProductName;
+                dataInDb.ProductQuantity = ptDTO.ProductMst.ProductQuantity;
+                dataInDb.OriginalPrice = ptDTO.ProductMst.OriginalPrice;
+                dataInDb.SellingPrice = ptDTO.ProductMst.SellingPrice;
+                context.SaveChanges();
+            }
+            
+            return RedirectToAction("ProductList");
         }
 
-        public ActionResult ProducList()
+        public ActionResult ProductList()
         {
             var productList=from a in context.ProductMsts
-                            join b in context.ProductTypeListMst on a.fk_ProductID equals b.pk_ProductID
+                            join b in context.ProductTypes on a.fk_ProductID equals b.pk_prodtypeid
                             select  new ProductListDTO
                             {
                                 pk_ProductID=a.pk_ProductID,
@@ -47,6 +62,26 @@ namespace Store_Management.Controllers
                                 ProductQuantity=a.ProductQuantity
                             };
             return View(productList);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var editData = new ProductMstDTO
+            {
+                ProductMst = context.ProductMsts.FirstOrDefault(a => a.pk_ProductID == id),
+                ProductTypeListMst = context.ProductTypes.ToList()
+            };
+
+            return View("AddUpdateProduct", editData);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            var dataDelete = context.ProductMsts.FirstOrDefault(a => a.pk_ProductID == id);
+
+            context.ProductMsts.Remove(dataDelete);
+            context.SaveChangesAsync();
+            return RedirectToAction("ProductList");
         }
     }
 }

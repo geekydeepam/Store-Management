@@ -7,7 +7,7 @@
 
 <h2>AddUpdateProduct</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("AddUpdateProduct","Product")) 
 {
     @Html.AntiForgeryToken()
     
@@ -64,5 +64,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "ProductList")
 </div>

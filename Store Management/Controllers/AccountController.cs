@@ -17,6 +17,7 @@ namespace Store_Management.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        ApplicationDbContext context = new ApplicationDbContext();
 
         public AccountController()
         {
@@ -139,6 +140,7 @@ namespace Store_Management.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.Name = new SelectList(context.Roles.ToList(),"Name","Name");
             return View();
         }
 
@@ -151,10 +153,12 @@ namespace Store_Management.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email};
                 var result = await UserManager.CreateAsync(user, model.Password);
+                
                 if (result.Succeeded)
                 {
+                    await UserManager.AddToRoleAsync(user.Id, model.Name);
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771

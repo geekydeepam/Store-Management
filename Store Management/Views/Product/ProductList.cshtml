@@ -54,9 +54,8 @@
             @Html.DisplayFor(modelItem => item.ProductQuantity)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Edit", "Edit", new { id=item.pk_ProductID  }) |
+            @Html.ActionLink("Delete", "Delete", new {  id=item.pk_ProductID    })
         </td>
     </tr>
 }

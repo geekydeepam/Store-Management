@@ -168,13 +168,19 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Common\CustomRoles.cs" />
+    <Compile Include="Common\ModuleMst.cs" />
     <Compile Include="Common\ProductMst.cs" />
     <Compile Include="Common\ProductType.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProducttypeController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\UserHomeController.cs" />
+    <Compile Include="DTO\ProductListDTO.cs" />
     <Compile Include="DTO\ProductMstDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -187,6 +193,10 @@
     <Compile Include="Migrations\202410271100384_AddProductMst.Designer.cs">
       <DependentUpon>202410271100384_AddProductMst.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202410291325181_addModule.cs" />
+    <Compile Include="Migrations\202410291325181_addModule.Designer.cs">
+      <DependentUpon>202410291325181_addModule.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -195,6 +205,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-cruelean.min.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -207,13 +218,13 @@
     <Content Include="Content\bootstrap-utilities.min.css" />
     <Content Include="Content\bootstrap-utilities.rtl.css" />
     <Content Include="Content\bootstrap-utilities.rtl.min.css" />
-    <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\Clothes.jpg" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -268,7 +279,16 @@
     <Content Include="Views\ProductType\CreateUpdateForm.cshtml" />
     <Content Include="Views\ProductType\ProductTypeList.cshtml" />
     <Content Include="Views\Product\AddUpdateProduct.cshtml" />
-    <Content Include="Views\Product\ProducList.cshtml" />
+    <Content Include="Views\Product\ProductList.cshtml" />
+    <Content Include="Views\Role\RoleList.cshtml" />
+    <Content Include="Views\Role\CreateRole.cshtml" />
+    <Content Include="Views\Shared\_Admin.cshtml" />
+    <Content Include="Views\Shared\_General.cshtml" />
+    <Content Include="Views\Shared\_Cloth.cshtml" />
+    <Content Include="Views\Shared\_Home.cshtml" />
+    <Content Include="Views\Module\CreateModule.cshtml" />
+    <Content Include="Views\Module\ModuleList.cshtml" />
+    <Content Include="Views\UserHome\DisplayModules.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -306,6 +326,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202410271100384_AddProductMst.resx">
       <DependentUpon>202410271100384_AddProductMst.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202410291325181_addModule.resx">
+      <DependentUpon>202410291325181_addModule.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
