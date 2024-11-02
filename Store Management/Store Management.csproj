@@ -171,9 +171,11 @@
     <Compile Include="Common\CustomerMst.cs" />
     <Compile Include="Common\CustomRoles.cs" />
     <Compile Include="Common\ModuleMst.cs" />
+    <Compile Include="Common\ProductListForBill.cs" />
     <Compile Include="Common\ProductMst.cs" />
     <Compile Include="Common\ProductType.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CommonBillController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -182,6 +184,8 @@
     <Compile Include="Controllers\ProducttypeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserHomeController.cs" />
+    <Compile Include="DTO\CommonBillDTO.cs" />
+    <Compile Include="DTO\ProductDDD_dto.cs" />
     <Compile Include="DTO\ProductListDTO.cs" />
     <Compile Include="DTO\ProductMstDTO.cs" />
     <Compile Include="Global.asax.cs">
@@ -206,6 +210,14 @@
     <Compile Include="Migrations\202410301354337_AddCustomerMst.cs" />
     <Compile Include="Migrations\202410301354337_AddCustomerMst.Designer.cs">
       <DependentUpon>202410301354337_AddCustomerMst.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411020723088_AddProductBillList.cs" />
+    <Compile Include="Migrations\202411020723088_AddProductBillList.Designer.cs">
+      <DependentUpon>202411020723088_AddProductBillList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411020724331_AddProductBillLists.cs" />
+    <Compile Include="Migrations\202411020724331_AddProductBillLists.Designer.cs">
+      <DependentUpon>202411020724331_AddProductBillLists.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -475,6 +487,7 @@
     <Content Include="Views\UserHome\DisplayModules.cshtml" />
     <Content Include="Views\Customer\SaveUpdateCustomer.cshtml" />
     <Content Include="Views\Customer\CustomerList.cshtml" />
+    <Content Include="Views\CommonBill\SaveUpdateBill.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -521,6 +534,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202410301354337_AddCustomerMst.resx">
       <DependentUpon>202410301354337_AddCustomerMst.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411020723088_AddProductBillList.resx">
+      <DependentUpon>202411020723088_AddProductBillList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411020724331_AddProductBillLists.resx">
+      <DependentUpon>202411020724331_AddProductBillLists.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

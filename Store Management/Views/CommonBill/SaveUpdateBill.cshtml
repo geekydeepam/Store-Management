@@ -1,0 +1,120 @@
+﻿@model Store_Management.DTO.CommonBillDTO
+
+@{
+    ViewBag.Title = "SaveUpdateBill";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SaveUpdateBill</h2>
+
+@section scripts{
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/start/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#txtItemSearch').autocomplete(
+                {
+                    source: function (request, response)
+                    {
+                        $.ajax(
+                            {
+                            url: '@Url.Action("Get_Search_ProductList", "CommonBill")',
+                            type: 'Get',
+                            datatype: 'JSON',
+                            data: { Productname: request.term },
+                                success: function (data){
+                                    response($.map(data, function (item)
+                                    {
+                                        return { label: item.ProductName, value: item.pk_prodid }
+                                    }));
+                                }
+                            });
+                    },
+                    select: function (event, ui) {
+                        event.preventDefault();
+                        $('#txtItemSearch').val('');
+                        $('#fk_prodID').val(ui.item.value);
+                    }
+                });
+
+            $("#prodQuantity").change(function () {
+                $.ajax({
+                    url: '@Url.Action("Get_Product_PRice", "CommonBill")',
+                    type: 'POST',
+                    datatype: 'JSON',
+                    data: { productID: $('#fk_prodID').val(), countOrWeight: $("#prodQuantity").val() },
+                    success: function (data) {
+                        $("#price").val(data);
+                        
+                    },
+                    error: function (err) {
+                        alert(JSON.stringify(err));
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+@using (Html.BeginForm("SaveUpdateBill", "CommonBill"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>CommonBillDTO</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="alert alert-dismissible alert-success">
+            <div class="col-md-6">
+                <strong>
+                    Customer Name: @Html.DisplayFor(a => a.customerMst.Name)
+                </strong>
+            </div>
+            <div class="col-md-6">
+                <strong>
+                    Customer Mobile : @Html.DisplayFor(a => a.customerMst.MobNo)
+                </strong>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.fk_prodID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.fk_prodID, new SelectList(Model.ProductList, "pk_prodid", "ProductName"), "--Select Product--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.fk_prodID, "", new { @class = "text-danger" })
+
+                <input type="text" id="txtItemSearch" placeholder="Search Product" class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.prodQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.prodQuantity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.prodQuantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.HiddenFor(a => a.customerMst.pk_CustId)
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

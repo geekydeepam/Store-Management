@@ -24,11 +24,7 @@
                     {
                         @Html.Partial("_Admin")
                     }
-                    else if (User.IsInRole("General Store"))
-                    {
-                        @Html.Partial("_General")
-                    }
-                    else if (User.IsInRole("Cloth Store"))
+                    else
                     {
                         @Html.Partial("_Cloth")
                     }

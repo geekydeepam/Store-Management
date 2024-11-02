@@ -21,7 +21,7 @@
     </script>
 }
 <p>
-    @Html.ActionLink("Create New", "AddUpdateProduct")
+    @Html.ActionLink("Create New", "AddUpdateProduct",null,new {@class="btn btn-success"})
 </p>
 <table class="table" id="tblProduct">
     <thead>
@@ -64,8 +64,8 @@
                     @Html.DisplayFor(modelItem => item.ProductQuantity)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.pk_ProductID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.pk_ProductID })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.pk_ProductID },new {@class="btn btn-secondary"}) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.pk_ProductID }, new { @class = "btn btn-danger" })
                 </td>
             </tr>
         }

@@ -5,19 +5,24 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>CustomerList</h2>
+<h2>Customer List</h2>
 
 @section scripts{
     <script>
-    $(document).ready(function () {
-    $('#CustTable').DataTable(
-    {});
-    });
+        $(document).ready(function () {
+            $('#CustTable').DataTable(
+                {});
+        });
     </script>
 }
-<p>
-    @Html.ActionLink("Create New", "SaveUpdateCustomer")
-</p>
+
+@if (!User.IsInRole("Admin"))
+{
+    <p>
+        @Html.ActionLink("Create New", "SaveUpdateCustomer", "Customer", null, new { @class = "btn btn-secondary" })
+    </p>
+}
+
 <table id="CustTable" class="table table-striped">
     <thead>
         <tr>
@@ -28,9 +33,10 @@
                 @Html.DisplayNameFor(model => model.MobNo)
             </th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
-    
+
     <tbody>
         @foreach (var item in Model)
         {
@@ -42,13 +48,20 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.MobNo)
                 </td>
+                @if (!User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.ActionLink("Select", "SaveUpdateBill", "CommonBill", new { id = item.pk_CustId }, new { @class = "btn btn-primary" })
+                    </td>
+                }
+
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.pk_CustId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.pk_CustId })
+                    @Html.ActionLink("Edit", "Edit", "Customer", new { id = item.pk_CustId }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Delete", "Delete", "Customer", new { id = item.pk_CustId }, new { @class = "btn btn-danger" })
                 </td>
             </tr>
         }
     </tbody>
-    
+
 
 </table>

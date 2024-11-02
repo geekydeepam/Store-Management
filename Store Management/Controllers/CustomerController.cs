@@ -16,15 +16,17 @@ namespace Store_Management.Controllers
         public ActionResult CustomerList()
         {
 
-            IEnumerable<CustomerMst> CustomerList;
+            IEnumerable<CustomerMst> CustomerList=new List<CustomerMst>();
             if(User.IsInRole("Admin"))
             {
-                CustomerList = context.CustomerMsts.ToList();
+                CustomerList = (from a in context.CustomerMsts
+                               select a).ToList();
             }
             else
             {
                 CustomerList = (context.CustomerMsts.Where(a => a.Username == User.Identity.Name)).ToList();
             }
+            
             
 
             return View(CustomerList);
@@ -44,7 +46,16 @@ namespace Store_Management.Controllers
 
             context.CustomerMsts.Add(customerMst);
             context.SaveChanges();
-            return View();
+            return RedirectToAction("CustomerList");
+        }
+
+        public ActionResult Delete(int id)
+        {
+            var dataDelete = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == id);
+
+            context.CustomerMsts.Remove(dataDelete);
+            context.SaveChangesAsync();
+            return RedirectToAction("CustomerList");
         }
     }
 }
