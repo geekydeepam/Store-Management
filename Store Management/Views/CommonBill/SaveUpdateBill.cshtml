@@ -42,12 +42,12 @@
             $("#prodQuantity").change(function () {
                 $.ajax({
                     url: '@Url.Action("Get_Product_PRice", "CommonBill")',
-                    type: 'POST',
+                    type: 'get',
                     datatype: 'JSON',
                     data: { productID: $('#fk_prodID').val(), countOrWeight: $("#prodQuantity").val() },
                     success: function (data) {
-                        $("#price").val(data);
-                        
+                        $("#price").val(JSON.stringify(data));
+
                     },
                     error: function (err) {
                         alert(JSON.stringify(err));
@@ -109,12 +109,24 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 @Html.HiddenFor(a => a.customerMst.pk_CustId)
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Add" class="btn btn-default border border-1 mt-2 mb-2" />
             </div>
         </div>
+
+        @Html.HiddenFor(model => model.pk_tempbillID)
+        @Html.HiddenFor(model => model.customerMst.pk_CustId)
+
+        @Html.ActionLink("Go to Product List", "TempBillList", "CommonBill", new { id = Model.customerMst.pk_CustId }, new { @class = "btn btn-warning pull-right" })
+        @Html.ActionLink("Back to Select Customer/Create Customer", "CustomerList", "Customer", null, new { @class = "btn btn-info pull-right" })
     </div>
 }
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-dismissible alert-danger" style="margin-top:30px">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>@TempData["Error"]</strong>
+    </div>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+}
+
+

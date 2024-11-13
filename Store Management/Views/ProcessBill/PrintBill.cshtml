@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "PrintBill";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Store_Management.DTO.PrintBillDTO
+
+
+<div class="alert alert-dismissible alert-info" style="margin-top:20px">
+
+    <strong>Customer Name : @Model.CustomerMst.Name</strong>
+</div>
+<table cellpadding='0' cellspacing='0' class='table table-bordered'>
+
+
+    <thead>
+        <tr>
+            <th>
+                Ptoduct Name
+            </th>
+            <th>
+                Product Type
+            </th>
+            <th>
+                Product Price
+            </th>
+            <th>
+                Product Quantity
+            </th>
+            <th colspan="2">
+                Current Price
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model.ProcessBillDto)
+    {
+        <tr>
+            <td style="color:blue">
+                @item.productName
+            </td>
+            <td>
+                @item.productType
+            </td>
+            <td>
+                @item.productRate
+            </td>
+            <td>
+                @item.productQuantity
+            </td>
+            <td colspan="2">
+                @item.PiceByQuantity
+            </td>
+        </tr>
+    }
+    <tr>
+        <td colspan="3"></td>
+        <td>
+            <strong>Total Price</strong>
+        </td>
+        <td colspan="2">
+            <strong>@Model.TotalPrice</strong>
+        </td>
+    </tr>
+</table>
+
+<div>
+    @Html.ActionLink("Print Bill", "DownloadBill", "ProcessBill", new { pk_custid = Model.CustomerMst.pk_CustId }, new {@class="btn btn-primary"} )
+</div>
+
+

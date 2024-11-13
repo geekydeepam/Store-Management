@@ -1,0 +1,100 @@
+﻿@model Store_Management.DTO.tempBillProductLists
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert alert-dismissible alert-success" style="padding:15px;margin-top:20px">
+
+    <div class="col-md-6">
+        <strong>Customer Name:  @Html.DisplayFor(model => model.CustomerMst.Name) </strong>
+    </div>
+    <div class="col-md-6">
+        <strong> Customer Mob No:  @Html.DisplayFor(model => model.CustomerMst.MobNo) </strong>
+    </div>
+</div>
+
+
+<p>
+    @Html.ActionLink("Add More Items", "SaveUpdateBill", new { id = Model.CustomerMst.pk_CustId }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Generate Bill", "GenearateBill","ProcessBill", new { pk_custid = Model.CustomerMst.pk_CustId }, new { @class = "btn btn-primary", id = "btnPrint", target = "_blank" })
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                ProductName
+
+            </th>
+            <th>
+                ProductType
+
+            </th>
+            <th>
+                Selingprice
+
+            </th>
+            <th>
+                Product Quantity
+            </th>
+            <th>
+                Total Selling Price
+
+            </th>
+            <th>
+                Remaining Item Quantity
+
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.BillItemTempDTOList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductType)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Selingprice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sellingProductuantity)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SelinTotalgprice)
+                                                                                      
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RemainingItem)
+                </td>
+
+                <td>
+
+                    @Html.ActionLink("Edit", "Edit", new { id = item.fk_tempbillid }) |
+
+                    @Html.ActionLink("Delete", "Delete", new { pk_tempitemid = item.fk_tempbillid, pk_custid = Model.CustomerMst.pk_CustId })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@*@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#btnPrint').click(function () {
+                location.reload();
+            });
+        });
+    </script>
+}*@

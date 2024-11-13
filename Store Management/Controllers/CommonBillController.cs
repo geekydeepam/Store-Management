@@ -26,7 +26,7 @@ namespace Store_Management.Controllers
         [HttpGet]
         public ActionResult SaveUpdateBill(int id)
         {
-            CommonBillDTO item = new CommonBillDTO();
+            CommonBillDTO item=new CommonBillDTO();
 
             CustomerMst cust;
             if(User.IsInRole("Admin"))
@@ -43,17 +43,52 @@ namespace Store_Management.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveUpdateBill(CommonBillDTO billData)
+        public ActionResult SaveUpdateBill(CommonBillDTO bill)
         {
-            ProductListForBill productDetail = new ProductListForBill();
-            productDetail.username = User.Identity.Name;
-            productDetail.fk_custId = billData.customerMst.pk_CustId;
-            productDetail.Fk_ProductId = billData.fk_prodID;
-            productDetail.productQuantity = billData.prodQuantity;
-            productDetail.price = billData.price;
-            context.ProductListForBills.Add(productDetail);
-            context.SaveChanges();
-            return View();
+            BillsItemTemp billAlreadyAdd = context.BillsItemTemps.FirstOrDefault(a => a.fk_custId == bill.customerMst.pk_CustId &&
+             a.Fk_ProductId == bill.fk_prodID && a.Username == User.Identity.Name);
+
+            ProductMst pro = context.ProductMsts.FirstOrDefault(a => a.pk_ProductID == bill.fk_prodID);
+            if (bill.prodQuantity % 1 != 0 && pro.pk_ProductID != 2)
+            {
+                TempData["Error"] = "Product Quantity should be in number.";
+                return RedirectToAction("SaveUpdateBill", new { id = bill.customerMst.pk_CustId });
+            }
+
+            if (billAlreadyAdd != null && Convert.ToInt32(bill.pk_tempbillID) == 0)
+            {
+                TempData["Error"] = "Product Is Already Added.";
+                return RedirectToAction("SaveUpdateBill", new { id = bill.customerMst.pk_CustId });
+            }
+
+            if (Convert.ToInt32(bill.pk_tempbillID) == 0)
+            {
+                BillsItemTemp tempItem = new BillsItemTemp();
+
+                tempItem.Fk_ProductId = bill.fk_prodID;
+                tempItem.prodQuantity = bill.prodQuantity;
+                tempItem.price = bill.price;
+                tempItem.fk_custId = bill.customerMst.pk_CustId;
+                tempItem.Username = User.Identity.Name;
+
+                context.BillsItemTemps.Add(tempItem);
+                context.SaveChanges();
+            }
+            else
+            {
+                var iteminDb = context.BillsItemTemps.FirstOrDefault(a => a.id == bill.pk_tempbillID);
+                iteminDb.Fk_ProductId = bill.fk_prodID;
+                iteminDb.prodQuantity = bill.prodQuantity;
+                iteminDb.price = bill.price;
+                context.SaveChanges();
+            }
+
+
+
+
+
+            return RedirectToAction("TempBillList", new { id = bill.customerMst.pk_CustId });
+
 
         }
 
@@ -136,6 +171,144 @@ namespace Store_Management.Controllers
         }
 
 
-        
+        public ActionResult TempBillList(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return HttpNotFound();
+            }
+
+
+
+
+            tempBillProductLists list = new tempBillProductLists();
+            if (User.IsInRole("Admin"))
+            {
+                list.BillItemTempDTOList = from a in context.BillsItemTemps
+                                           join b in context.ProductTypes on a.Fk_ProductId equals b.pk_prodtypeid
+                                           join c in context.ProductMsts on a.Fk_ProductId equals c.pk_ProductID
+                                           join d in context.CustomerMsts on a.fk_custId equals d.pk_CustId
+                                           where a.prodQuantity > 0
+                                           select new BillItemTempDTO
+                                           {
+
+                                               ProductType = b.Description,
+                                               ProductName = c.ProductName,
+                                               sellingProductuantity = a.prodQuantity,
+                                               RemainingItem = (c.ProductQuantity - a.prodQuantity),
+                                               Selingprice = c.SellingPrice,
+                                               SelinTotalgprice = a.price
+                                           };
+
+                list.CustomerMst = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == id);
+            }
+            else
+            {
+                // Step 1: Get the filtered items from BillsItemTemps
+                var billItems = context.BillsItemTemps
+                    .Where(a => a.Username == User.Identity.Name && a.prodQuantity > 0)
+                    .ToList();
+
+                // Step 2: Get related data from ProductMsts based on filtered bill items
+                var productIds = billItems.Select(a => a.Fk_ProductId).Distinct().ToList();
+                var products = context.ProductMsts
+                    .Where(c => productIds.Contains(c.pk_ProductID))
+                    .ToList();
+
+                // Step 3: Get related data from ProductTypes based on product foreign keys
+                var productTypeIds = products.Select(c => c.fk_ProductID).Distinct().ToList();
+                var productTypes = context.ProductTypes
+                    .Where(b => productTypeIds.Contains(b.pk_prodtypeid))
+                    .ToList();
+
+                // Step 4: Get related data from CustomerMsts based on customer foreign keys
+                var customerIds = billItems.Select(a => a.fk_custId).Distinct().ToList();
+                var customers = context.CustomerMsts
+                    .Where(d => customerIds.Contains(d.pk_CustId))
+                    .ToList();
+
+                // Step 5: Join the data in memory
+                list.BillItemTempDTOList = (
+                    from a in billItems
+                    join c in products on a.Fk_ProductId equals c.pk_ProductID
+                    join b in productTypes on c.fk_ProductID equals b.pk_prodtypeid
+                    join d in customers on a.fk_custId equals d.pk_CustId
+                    select new BillItemTempDTO
+                    {
+                        fk_tempbillid = a.id,
+                        ProductType = b.Description,
+                        ProductName = c.ProductName,
+                        sellingProductuantity = a.prodQuantity,
+                        RemainingItem = (c.ProductQuantity - a.prodQuantity),
+                        Selingprice = c.SellingPrice,
+                        SelinTotalgprice = a.price
+                    }
+                ).ToList();
+
+
+                list.CustomerMst = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == id && a.Username == User.Identity.Name);
+            }
+            if (list.BillItemTempDTOList.ToList().Count() > 0)
+            {
+                return View(list);
+            }
+            else
+            {
+                TempData["Error"] = "No Item is available for " + list.CustomerMst.Name;
+                return RedirectToAction("SaveUpdateBill", new { id = id });
+            }
+
+
+        }
+
+
+        public ActionResult Delete(int pk_tempitemid, int pk_custid)
+        {
+
+            var item = context.BillsItemTemps.FirstOrDefault(a => a.id == pk_tempitemid);
+            context.BillsItemTemps.Remove(item);
+            context.SaveChanges();
+
+
+            return RedirectToAction("TempBillList", new { id = pk_custid });
+        }
+
+        public ActionResult Edit(int id)
+        {
+            CommonBillDTO item = new CommonBillDTO();
+            CustomerMst cust;
+            BillsItemTemp itemForEdit = new BillsItemTemp();
+            if (itemForEdit == null)
+            {
+                return HttpNotFound();
+            }
+            itemForEdit = context.BillsItemTemps.FirstOrDefault(a => a.id == id);
+            if (User.IsInRole("Admin"))
+            {
+                cust = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == id);
+            }
+            else
+            {
+                cust = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == itemForEdit.fk_custId && a.Username == User.Identity.Name);
+            }
+            if (cust == null)
+            {
+                return HttpNotFound();
+            }
+
+            item = getProducts();
+            item.pk_tempbillID = itemForEdit.id;
+            item.fk_prodID = itemForEdit.Fk_ProductId;
+            item.price = itemForEdit.price;
+            item.prodQuantity = itemForEdit.prodQuantity;
+
+
+            item.customerMst = cust;
+            return View("AddProdForBillList", item);
+        }
+
+
+
+
     }
 }

@@ -15,7 +15,7 @@ namespace Store_Management.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "Empower Your Business: Seamless Store Management at Your Fingertips!";
 
             return View();
         }

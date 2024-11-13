@@ -9,7 +9,7 @@ namespace Store_Management.Common
     public class ProductType
     {
         [Key]
-        public int? pk_prodtypeid { get; set; }
+        public int pk_prodtypeid { get; set; }
 
 
         public string Description { get; set; }
