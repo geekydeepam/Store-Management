@@ -1,4 +1,5 @@
 ﻿using Store_Management.Common;
+using Store_Management.DTO;
 using Store_Management.Models;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 
 namespace Store_Management.Controllers
 {
+    [Authorize]
     public class CustomerController : Controller
     {
 
@@ -32,7 +34,7 @@ namespace Store_Management.Controllers
             return View(CustomerList);
         }
 
-
+        [HttpGet]
         public ActionResult SaveUpdateCustomer()
         {
             
@@ -40,13 +42,49 @@ namespace Store_Management.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveUpdateCustomer(CustomerMst customerMst)
+        public ActionResult SaveUpdateCustomer(CustomerDTO customerdto)
         {
-            customerMst.Username=User.Identity.Name;
+            if (customerdto.Customer.pk_CustId == 0)
+            {
+                customerdto.Customer.Username = User.Identity.Name;
+                context.CustomerMsts.Add(customerdto.Customer);
+                context.SaveChanges();
+            }
+            else
+            {
+                if (User.IsInRole("Admin"))
+                {
+                    var custInDb = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == customerdto.Customer.pk_CustId);
+                    custInDb.Name = customerdto.Customer.Name;
+                    custInDb.MobNo = customerdto.Customer.MobNo;
 
-            context.CustomerMsts.Add(customerMst);
-            context.SaveChanges();
+                }
+                else
+                {
+                    var custInDb = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == customerdto.Customer.pk_CustId && a.Username == User.Identity.Name);
+                    custInDb.Name = customerdto.Customer.Name;
+                    custInDb.MobNo = customerdto.Customer.MobNo;
+                }
+                context.SaveChanges();
+
+            }
+
             return RedirectToAction("CustomerList");
+        }
+
+
+        public ActionResult Edit(int id)
+        {
+            CustomerDTO  cust=new CustomerDTO();
+            if (User.IsInRole("Admin"))
+            {
+                cust.Customer = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == id);
+            }
+            else
+            {
+                cust.Customer = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == id && a.Username == User.Identity.Name);
+            }
+            return View("SaveUpdateCustomer",cust);
         }
 
         public ActionResult Delete(int id)

@@ -5,14 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>ProducList</h2>
+<h2>Product List</h2>
 <style>
-
 </style>
 
 @section scripts
     {
-    
+
     <script>
         $(document).ready(function () {
             $('#tblProduct').DataTable(
@@ -20,10 +19,14 @@
         });
     </script>
 }
-<p>
-    @Html.ActionLink("Create New", "AddUpdateProduct",null,new {@class="btn btn-success"})
-</p>
-<table class="table" id="tblProduct">
+@if(!User.IsInRole("Admin"))
+{
+    <p>
+        @Html.ActionLink("Create New", "AddUpdateProduct", null, new { @class = "btn btn-success" })
+    </p>
+}
+
+<table class="table mt-lg-5" id="tblProduct">
     <thead>
         <tr>
             <th>
@@ -64,7 +67,7 @@
                     @Html.DisplayFor(modelItem => item.ProductQuantity)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.pk_ProductID },new {@class="btn btn-secondary"}) |
+                    @Html.ActionLink("Edit", "Edit", new { id = item.pk_ProductID }, new { @class = "btn btn-secondary" }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.pk_ProductID }, new { @class = "btn btn-danger" })
                 </td>
             </tr>

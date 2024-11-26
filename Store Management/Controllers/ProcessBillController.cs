@@ -1,4 +1,6 @@
-﻿using Store_Management.Common;
+﻿using Microsoft.AspNet.Identity;
+using PdfSharp.Pdf.Advanced;
+using Store_Management.Common;
 using Store_Management.DTO;
 using Store_Management.Models;
 using Store_Management.Service;
@@ -6,8 +8,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
+
+
 
 namespace Store_Management.Controllers
 {
@@ -15,7 +21,6 @@ namespace Store_Management.Controllers
     public class ProcessBillController : Controller
     {
         ApplicationDbContext context;
-
         public ProcessBillController()
         {
             context = new ApplicationDbContext();
@@ -47,60 +52,85 @@ namespace Store_Management.Controllers
             return trnid;
         }
 
-        public ActionResult GenearateBill(int pk_custid)
-        {
-            List<BillsItemTemp> ProductForProcess = new List<BillsItemTemp>();
-            if (User.IsInRole("Admin"))
-            {
-                ProductForProcess = context.BillsItemTemps.Where(a => a.fk_custId == pk_custid).ToList();
-            }
-            else
-            {
-                ProductForProcess = context.BillsItemTemps.Where(a => a.fk_custId == pk_custid && a.Username == User.Identity.Name).ToList();
-            }
+        //public ActionResult GenearateBills(int pk_custid)
+        //{
+        //    List<BillsItemTemp> ProductForProcess = new List<BillsItemTemp>();
+        //    if (User.IsInRole("Admin"))
+        //    {
+        //        ProductForProcess = context.BillsItemTemps.Where(a => a.fk_custId == pk_custid).ToList();
+        //    }
+        //    else
+        //    {
+        //        ProductForProcess = context.BillsItemTemps.Where(a => a.fk_custId == pk_custid && a.Username == User.Identity.Name).ToList();
+        //    }
 
-            int trnId = ProcessBillList(ProductForProcess);
+        //    int trnId = ProcessBillList(ProductForProcess);
 
-            return RedirectToAction("PrintBill", new { trnid = trnId, custId = pk_custid });
-        }
+        //    return RedirectToAction("PrintBill", new { trnid = trnId, custId = pk_custid });
+        //}
 
-        public ActionResult PrintBill(int trnid, int custId)
-        {
+        //public ActionResult PrintBill(int trnid, int custId)
+        //{
 
-            PrintBillDTO printBillDTO = new PrintBillDTO();
-            printBillDTO.ProcessBillDto = GetDataForPrintBill(trnid);
-            printBillDTO.TotalPrice = printBillDTO.ProcessBillDto.Sum(a => a.PiceByQuantity);
-            printBillDTO.CustomerMst = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == custId);
+        //    PrintBillDTO printBillDTO = new PrintBillDTO();
+        //    printBillDTO.ProcessBillDto = GetDataForPrintBill(trnid);
+        //    printBillDTO.TotalPrice = printBillDTO.ProcessBillDto.Sum(a => a.PiceByQuantity);
+        //    printBillDTO.CustomerMst = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == custId);
 
-            return View(printBillDTO);
-        }
+        //    return View(printBillDTO);
+        //}
 
         private IEnumerable<ProcessBillDTO> GetDataForPrintBill(int trnId)
         {
-            IEnumerable<ProcessBillDTO> billData = new List<ProcessBillDTO>();
-            billData = from a in context.ProcessBills
-                       join b in context.ProductMsts on a.fk_productId equals b.pk_ProductID
-                       join c in context.ProductTypes on b.fk_ProductID equals c.pk_prodtypeid
-                       where a.trnId == trnId
-                       select new ProcessBillDTO
-                       {
-                           fk_productType = a.fk_productId,
-                           productName = b.ProductName,
-                           productQuantity = a.ProductQuantity,
-                           productType = c.Description,
-                           productRate = b.SellingPrice,
-                           fk_custid = a.fk_custid,
-                           PiceByQuantity = a.PrductCurrentPrice
+            
+            // Step 1: Get filtered records from ProcessBills based on trnId
+            var processBills = context.ProcessBills
+                .Where(a => a.trnId == trnId)
+                .ToList();
 
-                       };
+            // Step 2: Get related data from ProductMsts based on product IDs in processBills
+            var productIds = processBills.Select(a => a.fk_productId).Distinct().ToList();
+            var products = context.ProductMsts
+                .Where(b => productIds.Contains(b.pk_ProductID))
+                .ToList();
+
+            // Step 3: Get related data from ProductTypes based on foreign keys in products
+            var productTypeIds = products.Select(b => b.fk_ProductID).Distinct().ToList();
+            var productTypes = context.ProductTypes
+                .Where(c => productTypeIds.Contains(c.pk_prodtypeid))
+                .ToList();
+
+            // Step 4: Perform in-memory joins to create the ProcessBillDTO list
+            var billData = (
+                from a in processBills
+                join b in products on a.fk_productId equals b.pk_ProductID
+                join c in productTypes on b.fk_ProductID equals c.pk_prodtypeid
+                select new ProcessBillDTO
+                {
+                    fk_productType = a.fk_productId,
+                    productName = b.ProductName,
+                    productQuantity = a.ProductQuantity,
+                    productType = c.Description,
+                    productRate = b.SellingPrice,
+                    fk_custid = a.fk_custid,
+                    PiceByQuantity = a.PrductCurrentPrice
+                }
+            ).ToList();
+
 
             return billData;
         }
 
-
-
-        public ActionResult DownloadBill(int pk_custid)
+        public System.Security.Principal.IPrincipal GetUser()
         {
+            return User;
+        }
+
+        public ActionResult GenearateBill(int pk_custid)
+        {
+
+            var address=User.Identity.Name;
+
             List<BillsItemTemp> ProductForProcess = new List<BillsItemTemp>();
             if (User.IsInRole("Admin"))
             {
@@ -113,26 +143,21 @@ namespace Store_Management.Controllers
 
             int trnId = ProcessBillList(ProductForProcess);
 
-            return RedirectToAction("D_Bill", new { trnid = trnId, custId = pk_custid });
-        }
-
-        
-
-
-
-
-        public ActionResult D_Bill(int trnid, int custId)
-        {
             var invoiceService = new InvoiceService();
 
 
 
             PrintBillDTO printBillDTO = new PrintBillDTO();
-            printBillDTO.ProcessBillDto = GetDataForPrintBill(trnid);
+            printBillDTO.ProcessBillDto = GetDataForPrintBill(trnId);
             printBillDTO.TotalPrice = printBillDTO.ProcessBillDto.Sum(a => a.PiceByQuantity);
-            printBillDTO.CustomerMst = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == custId);
+            printBillDTO.CustomerMst = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == pk_custid);
 
             var document = invoiceService.GetInvoice(printBillDTO);
+
+
+
+            //document.Save("D:\\Download/Invoice.pdf");
+            //return document;
 
 
             MemoryStream stream = new MemoryStream();
@@ -140,10 +165,23 @@ namespace Store_Management.Controllers
 
             Response.ContentType = "application/pdf";
             Response.Headers.Add("content-length", stream.Length.ToString());
-            byte[] bytes= stream.ToArray();
+            byte[] bytes = stream.ToArray();
             stream.Close();
 
+
             return File(bytes, "application/pdf", "Invoice.pdf");
+        }
+
+        
+
+
+
+
+       
+
+        public ActionResult RedirectPage()
+        {
+            return RedirectToAction("Customer", "CustomerList");
         }
     }
 }

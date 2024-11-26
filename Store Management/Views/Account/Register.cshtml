@@ -19,6 +19,24 @@
             </div>
         </div>
         <div class="row m-2">
+            @Html.LabelFor(m => m.OwnerName, new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.OwnerName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row m-2">
+            @Html.LabelFor(m => m.BusinessName, new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.BusinessName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row m-2">
+            @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 col-form-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" ,@min=10})
+            </div>
+        </div>
+        <div class="row m-2">
             @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
             <div class="col-md-10">
                 @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
@@ -32,11 +50,18 @@
         </div>
 
         <div class="row m-2">
-            @Html.LabelFor(m => m.Name, new { @class = "col-md-2 col-form-label" })
+            @Html.LabelFor(m => m.Address, new { @class = "col-md-2 col-form-label" })
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.Name,ViewBag.Name as SelectList,"Select Role",new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
             </div>
         </div>
+
+        @*<div class="row m-2">
+                @Html.LabelFor(m => m.Name, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.Name, ViewBag.Name as SelectList, "Select Shop Type", new { @class = "form-control" })
+                </div>
+            </div>*@
         <div class="row m-1">
             <div class="offset-md-2 col-md-10">
                 <input type="submit" value="Register" class="btn btn-outline-dark" />

@@ -8,6 +8,7 @@ using Store_Management.Models;
 
 namespace Store_Management.Controllers
 {
+    [Authorize]
     public class ProducttypeController : Controller
     {
         ApplicationDbContext context;

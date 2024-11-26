@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace Store_Management.Controllers
 {
+    [Authorize]
     public class UserHomeController : Controller
     {
         ApplicationDbContext context=new ApplicationDbContext();

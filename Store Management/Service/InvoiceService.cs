@@ -1,4 +1,6 @@
-﻿using Microsoft.SqlServer.Server;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.SqlServer.Server;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Fields;
 using MigraDoc.DocumentObjectModel.Tables;
@@ -45,8 +47,9 @@ namespace Store_Management.Service
             para.AddText("Phone: +91-706-650-1610");
             para.Format.SpaceAfter = 20;
 
+
             para=section.AddParagraph();
-            para.AddText("Invoice no:N358586");
+            para.AddText($"Invoiceno");
             para.AddLineBreak();
             para.Add(new DateField { Format = "yyyy/MM/dd HH:mm:ss" });
             para.Format.SpaceAfter = 10;
@@ -96,7 +99,7 @@ namespace Store_Management.Service
             para.Format.SpaceBefore = 10;
 
             para = section.Footers.Primary.AddParagraph();
-            para.AddText("Store Management . Badami Haud . Shukrawarpeth . Pune ");
+            para.AddText($"  ");
             para.Format.Alignment = ParagraphAlignment.Center;
 
 

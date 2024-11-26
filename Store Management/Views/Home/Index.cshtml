@@ -1,33 +1,169 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+<style>
+    
 
+   
+
+    .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .btn.primary {
+            background-color: #333;
+            color: white;
+        }
+
+        .btn.secondary {
+            background-color: white;
+            color: #333;
+            border: 1px solid #333;
+        }
+
+    /* Hero Section */
+    .hero {
+        padding: 2rem;
+        text-align: center;
+    }
+    .hero p{
+        font-size:1.2rem;
+    }
+
+        .hero h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 1.5rem;
+        }
+
+    /* Features Section */
+    .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        padding: 2rem;
+        background-color: #f9f9f9;
+    }
+
+    .feature {
+        padding: 1rem;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+        .feature h3 {
+            font-size: 1.5rem;
+            color: #4CAF50;
+            margin-bottom: 0.5rem;
+        }
+
+    /* How It Works Section */
+    .how-it-works {
+        padding: 2rem;
+        text-align: center;
+    }
+
+        .how-it-works h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+    .steps {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+
+    .step {
+        max-width: 200px;
+    }
+
+        .step h3 {
+            color: #4CAF50;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+    /* Call to Action Section */
+    .cta {
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+        padding: 2rem;
+    }
+
+        .cta h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+</style>
 <main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h2>Empowering Small Businesses to Succeed</h2>
+        <p>Our app allows you to manage your business efficiently with a few simple clicks. Create customer profiles, organize your product inventory, and generate invoices quickly and professionally.</p>
+        <img src="~/Images/logoretail.png" alt="Business owner managing shop">
     </section>
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
-    </div>
+    <!-- Key Features Section -->
+    <section class="features">
+        <div class="feature">
+            <h3>Manage Customers</h3>
+            <p>Easily add and track your customers’ details, including names and contact numbers.</p>
+        </div>
+        <div class="feature">
+            <h3>Product Inventory</h3>
+            <p>Organize products by type, pricing, and quantity for easy access when retailing.</p>
+        </div>
+        <div class="feature">
+            <h3>Invoice Generation</h3>
+            <p>Generate professional PDF invoices for your customers with just one click.</p>
+        </div>
+        <div class="feature">
+            <h3>Seamless Setup</h3>
+            <p>Create an account with just your email and select your business type to get started instantly!</p>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <h3>Step 1</h3>
+                <p>Register with Your Email and Choose Your Business Type.</p>
+            </div>
+            <div class="step">
+                <h3>Step 2</h3>
+                <p>Add Products and Create Customer Profiles.</p>
+            </div>
+            <div class="step">
+                <h3>Step 3</h3>
+                <p>Process Sales and Generate Invoices.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta">
+        <h2>Ready to Get Started?</h2>
+        @Html.ActionLink("Sign Up Now", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn primary" })
+    </section>
 </main>

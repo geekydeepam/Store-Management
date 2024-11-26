@@ -62,63 +62,73 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>CommonBillDTO</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="form-horizontal">
+    <h4>CommonBillDTO</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="alert alert-dismissible alert-success">
-            <div class="col-md-6">
-                <strong>
-                    Customer Name: @Html.DisplayFor(a => a.customerMst.Name)
-                </strong>
-            </div>
-            <div class="col-md-6">
-                <strong>
-                    Customer Mobile : @Html.DisplayFor(a => a.customerMst.MobNo)
-                </strong>
-            </div>
+    <div class="alert alert-dismissible alert-success">
+        <div class="col-md-6">
+            <strong>
+                Customer Name: @Html.DisplayFor(a => a.customerMst.Name)
+            </strong>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.fk_prodID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.fk_prodID, new SelectList(Model.ProductList, "pk_prodid", "ProductName"), "--Select Product--", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.fk_prodID, "", new { @class = "text-danger" })
-
-                <input type="text" id="txtItemSearch" placeholder="Search Product" class="form-control">
-            </div>
+        <div class="col-md-6">
+            <strong>
+                Customer Mobile : @Html.DisplayFor(a => a.customerMst.MobNo)
+            </strong>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.prodQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.prodQuantity, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.prodQuantity, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                @Html.HiddenFor(a => a.customerMst.pk_CustId)
-                <input type="submit" value="Add" class="btn btn-default border border-1 mt-2 mb-2" />
-            </div>
-        </div>
-
-        @Html.HiddenFor(model => model.pk_tempbillID)
-        @Html.HiddenFor(model => model.customerMst.pk_CustId)
-
-        @Html.ActionLink("Go to Product List", "TempBillList", "CommonBill", new { id = Model.customerMst.pk_CustId }, new { @class = "btn btn-warning pull-right" })
-        @Html.ActionLink("Back to Select Customer/Create Customer", "CustomerList", "Customer", null, new { @class = "btn btn-info pull-right" })
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.fk_prodID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.fk_prodID, new SelectList(Model.ProductList, "pk_prodid", "ProductName"), "--Select Product--", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.fk_prodID, "", new { @class = "text-danger" })
+
+            <input type="text" id="txtItemSearch" placeholder="Search Product" class="form-control">
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.prodQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.prodQuantity, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.prodQuantity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.HiddenFor(a => a.customerMst.pk_CustId)
+            <input type="submit" value="Add" class="btn btn-default border border-1 mt-2 mb-2" />
+        </div>
+    </div>
+
+    @Html.HiddenFor(model => model.pk_tempbillID)
+    @Html.HiddenFor(model => model.customerMst.pk_CustId)
+
+    @if (Model != null && Model.customerMst != null && Model.customerMst.pk_CustId != null)
+    {
+        @Html.ActionLink("Go to Product List", "TempBillList", "CommonBill",
+            new { id = Model.customerMst.pk_CustId },
+            new { @class = "btn btn-warning pull-right" })
+    }
+    else
+    {
+        <p>Error: Missing customer information.</p>
+    }
+
+    @Html.ActionLink("Back to Select Customer/Create Customer", "CustomerList", "Customer", null, new { @class = "btn btn-info pull-right" })
+</div>
 }
 @if (TempData["Error"] != null)
 {

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.ModelBinding;
+//using System.Web.Mvc;
 
 namespace Store_Management.Models
 {
@@ -80,7 +82,26 @@ namespace Store_Management.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        public string Name { get; set; }
+        [Required]
+        [BindNever]
+        public string Name { get; set; } = "User";
+
+        [Required]
+        [Display(Name = "Owner Full Name")]
+        public string OwnerName { get; set; }
+
+        [Required]
+        [Display(Name = "Business Full Name")]
+        public string BusinessName { get; set; }
+
+        [Required]
+        [Display(Name="Phone Number")]
+        [MinLength(10),MaxLength(10)]
+        public string PhoneNumber { get; set; }
+
+
+
+        public string Address {  get; set; }
     }
 
     public class ResetPasswordViewModel

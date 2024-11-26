@@ -1,4 +1,5 @@
 ﻿using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
 using Store_Management.Common;
 using Store_Management.DTO;
 using Store_Management.Models;
@@ -10,24 +11,32 @@ using System.Web.Mvc;
 
 namespace Store_Management.Controllers
 {
+    [Authorize]
     public class CommonBillController : Controller
     {
         ApplicationDbContext context;
         // GET: CommonBill
 
+        private string username => User.Identity.IsAuthenticated ? User.Identity.GetUserName() : null;
+
         public CommonBillController()
         {
-            context=new ApplicationDbContext();
+            context = new ApplicationDbContext();
         }
+        
         public ActionResult Index()
         {
             return View();
         }
+
+
+
+
         [HttpGet]
         public ActionResult SaveUpdateBill(int id)
         {
             CommonBillDTO item=new CommonBillDTO();
-
+            
             CustomerMst cust;
             if(User.IsInRole("Admin"))
             {
@@ -35,7 +44,7 @@ namespace Store_Management.Controllers
             }
             else
             {
-                cust = context.CustomerMsts.FirstOrDefault(a=>a.pk_CustId == id && a.Username==User.Identity.Name);
+                cust = context.CustomerMsts.FirstOrDefault(a=>a.pk_CustId == id && a.Username== username);
             }
             item = getProducts();
             item.customerMst = cust;
@@ -46,7 +55,7 @@ namespace Store_Management.Controllers
         public ActionResult SaveUpdateBill(CommonBillDTO bill)
         {
             BillsItemTemp billAlreadyAdd = context.BillsItemTemps.FirstOrDefault(a => a.fk_custId == bill.customerMst.pk_CustId &&
-             a.Fk_ProductId == bill.fk_prodID && a.Username == User.Identity.Name);
+             a.Fk_ProductId == bill.fk_prodID && a.Username == username);
 
             ProductMst pro = context.ProductMsts.FirstOrDefault(a => a.pk_ProductID == bill.fk_prodID);
             if (bill.prodQuantity % 1 != 0 && pro.pk_ProductID != 2)
@@ -69,7 +78,7 @@ namespace Store_Management.Controllers
                 tempItem.prodQuantity = bill.prodQuantity;
                 tempItem.price = bill.price;
                 tempItem.fk_custId = bill.customerMst.pk_CustId;
-                tempItem.Username = User.Identity.Name;
+                tempItem.Username = username;
 
                 context.BillsItemTemps.Add(tempItem);
                 context.SaveChanges();
@@ -99,6 +108,7 @@ namespace Store_Management.Controllers
             if(User.IsInRole("Admin"))
             {
                 var prodlist = from productList in context.ProductMsts
+                               
                                orderby productList.ProductName
                                select new ProductDDD_dto
                                {
@@ -114,7 +124,7 @@ namespace Store_Management.Controllers
             {
                 var prodlist = from productList in context.ProductMsts
                                orderby productList.ProductName
-                               where productList.Username==User.Identity.Name
+                               where (productList.Username==username && productList.ProductQuantity > 0)
                                select new ProductDDD_dto
                                {
                                    pk_prodid = productList.pk_ProductID,
@@ -134,7 +144,7 @@ namespace Store_Management.Controllers
             if (User.IsInRole("Admin"))
             {
                  serachedProductList = from productList in context.ProductMsts
-                                       where productList.ProductName.Contains(Productname)
+                                       where (productList.ProductName.Contains(Productname) && productList.ProductQuantity>  0)
                                        select new ProductDDD_dto
                                {
                                            pk_prodid = productList.pk_ProductID,
@@ -145,7 +155,7 @@ namespace Store_Management.Controllers
             else
             {
                  serachedProductList = from productList in context.ProductMsts
-                                      where (productList.Username == User.Identity.Name && productList.ProductName.Contains(Productname))
+                                      where (productList.Username == username && productList.ProductName.Contains(Productname))
                                        select new ProductDDD_dto
                                {
                                    pk_prodid = productList.pk_ProductID,
@@ -206,7 +216,7 @@ namespace Store_Management.Controllers
             {
                 // Step 1: Get the filtered items from BillsItemTemps
                 var billItems = context.BillsItemTemps
-                    .Where(a => a.Username == User.Identity.Name && a.prodQuantity > 0)
+                    .Where(a => a.Username == username && a.prodQuantity > 0)
                     .ToList();
 
                 // Step 2: Get related data from ProductMsts based on filtered bill items
@@ -246,7 +256,7 @@ namespace Store_Management.Controllers
                 ).ToList();
 
 
-                list.CustomerMst = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == id && a.Username == User.Identity.Name);
+                list.CustomerMst = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == id && a.Username == username);
             }
             if (list.BillItemTempDTOList.ToList().Count() > 0)
             {
@@ -289,7 +299,7 @@ namespace Store_Management.Controllers
             }
             else
             {
-                cust = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == itemForEdit.fk_custId && a.Username == User.Identity.Name);
+                cust = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == itemForEdit.fk_custId && a.Username == username);
             }
             if (cust == null)
             {

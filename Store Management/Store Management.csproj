@@ -262,9 +262,11 @@
     <Compile Include="DTO\PrintBillDTO.cs" />
     <Compile Include="DTO\ProcessBillDTO.cs" />
     <Compile Include="DTO\ProductDDD_dto.cs" />
+    <Compile Include="DTO\CustomerDTO.cs" />
     <Compile Include="DTO\ProductListDTO.cs" />
     <Compile Include="DTO\ProductMstDTO.cs" />
     <Compile Include="DTO\tempBillProductLists.cs" />
+    <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -311,6 +313,22 @@
     <Compile Include="Migrations\202411101302429_AddedPrintProcess.cs" />
     <Compile Include="Migrations\202411101302429_AddedPrintProcess.Designer.cs">
       <DependentUpon>202411101302429_AddedPrintProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411250531272_added_Address.cs" />
+    <Compile Include="Migrations\202411250531272_added_Address.Designer.cs">
+      <DependentUpon>202411250531272_added_Address.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411251500080_k.cs" />
+    <Compile Include="Migrations\202411251500080_k.Designer.cs">
+      <DependentUpon>202411251500080_k.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411261417145_Added_Owner_Full_Name_and_Address.cs" />
+    <Compile Include="Migrations\202411261417145_Added_Owner_Full_Name_and_Address.Designer.cs">
+      <DependentUpon>202411261417145_Added_Owner_Full_Name_and_Address.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411261431421_Added_Business-name.cs" />
+    <Compile Include="Migrations\202411261431421_Added_Business-name.Designer.cs">
+      <DependentUpon>202411261431421_Added_Business-name.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -449,6 +467,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\Clothes.jpg" />
+    <Content Include="Images\logoretail.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -648,6 +667,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202411101302429_AddedPrintProcess.resx">
       <DependentUpon>202411101302429_AddedPrintProcess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411250531272_added_Address.resx">
+      <DependentUpon>202411250531272_added_Address.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411251500080_k.resx">
+      <DependentUpon>202411251500080_k.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411261417145_Added_Owner_Full_Name_and_Address.resx">
+      <DependentUpon>202411261417145_Added_Owner_Full_Name_and_Address.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411261431421_Added_Business-name.resx">
+      <DependentUpon>202411261431421_Added_Business-name.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

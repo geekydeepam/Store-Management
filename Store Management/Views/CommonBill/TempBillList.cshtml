@@ -16,9 +16,15 @@
 </div>
 
 
+
+
 <p>
     @Html.ActionLink("Add More Items", "SaveUpdateBill", new { id = Model.CustomerMst.pk_CustId }, new { @class = "btn btn-primary" })
-    @Html.ActionLink("Generate Bill", "GenearateBill","ProcessBill", new { pk_custid = Model.CustomerMst.pk_CustId }, new { @class = "btn btn-primary", id = "btnPrint", target = "_blank" })
+    <a href="@Url.Action("GenearateBill", "Processbill",new { pk_custid = Model.CustomerMst.pk_CustId })" class="btn btn-primary"
+       onclick="setTimeout(function(){ window.location.href = '/Customer/CustomerList'; }, 10000);">
+        Download Bill
+    </a>
+
 </p>
 
 <table class="table">
@@ -32,7 +38,7 @@
             <th>
                 ProductType
 
-            </th>
+            </th>B
             <th>
                 Selingprice
 
@@ -72,7 +78,7 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.SelinTotalgprice)
-                                                                                      
+
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.RemainingItem)
@@ -90,11 +96,11 @@
 </table>
 
 @*@section scripts{
-    <script>
-        $(document).ready(function () {
-            $('#btnPrint').click(function () {
-                location.reload();
+        <script>
+            $(document).ready(function () {
+                $('#btnPrint').click(function () {
+                    location.reload();
+                });
             });
-        });
-    </script>
-}*@
+        </script>
+    }*@
