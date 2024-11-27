@@ -81,7 +81,7 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.fk_prodID, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("Product", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownListFor(model => model.fk_prodID, new SelectList(Model.ProductList, "pk_prodid", "ProductName"), "--Select Product--", new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.fk_prodID, "", new { @class = "text-danger" })
@@ -91,7 +91,7 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.prodQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("Product Quantity", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.prodQuantity, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.prodQuantity, "", new { @class = "text-danger" })
@@ -99,7 +99,7 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("Price", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
@@ -116,7 +116,7 @@
     @Html.HiddenFor(model => model.pk_tempbillID)
     @Html.HiddenFor(model => model.customerMst.pk_CustId)
 
-    @if (Model != null && Model.customerMst != null && Model.customerMst.pk_CustId != null)
+    @if (Model != null && Model.customerMst != null && Model.customerMst.pk_CustId != 0)
     {
         @Html.ActionLink("Go to Product List", "TempBillList", "CommonBill",
             new { id = Model.customerMst.pk_CustId },

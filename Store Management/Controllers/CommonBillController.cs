@@ -54,49 +54,58 @@ namespace Store_Management.Controllers
         [HttpPost]
         public ActionResult SaveUpdateBill(CommonBillDTO bill)
         {
-            BillsItemTemp billAlreadyAdd = context.BillsItemTemps.FirstOrDefault(a => a.fk_custId == bill.customerMst.pk_CustId &&
+            if(ModelState.IsValid)
+            {
+                BillsItemTemp billAlreadyAdd = context.BillsItemTemps.FirstOrDefault(a => a.fk_custId == bill.customerMst.pk_CustId &&
              a.Fk_ProductId == bill.fk_prodID && a.Username == username);
 
-            ProductMst pro = context.ProductMsts.FirstOrDefault(a => a.pk_ProductID == bill.fk_prodID);
-            if (bill.prodQuantity % 1 != 0 && pro.pk_ProductID != 2)
-            {
-                TempData["Error"] = "Product Quantity should be in number.";
-                return RedirectToAction("SaveUpdateBill", new { id = bill.customerMst.pk_CustId });
-            }
+                ProductMst pro = context.ProductMsts.FirstOrDefault(a => a.pk_ProductID == bill.fk_prodID);
+                if (bill.prodQuantity % 1 != 0 && pro.pk_ProductID != 2)
+                {
+                    TempData["Error"] = "Product Quantity should be in number.";
+                    return RedirectToAction("SaveUpdateBill", new { id = bill.customerMst.pk_CustId });
+                }
 
-            if (billAlreadyAdd != null && Convert.ToInt32(bill.pk_tempbillID) == 0)
-            {
-                TempData["Error"] = "Product Is Already Added.";
-                return RedirectToAction("SaveUpdateBill", new { id = bill.customerMst.pk_CustId });
-            }
+                if (billAlreadyAdd != null && Convert.ToInt32(bill.pk_tempbillID) == 0)
+                {
+                    TempData["Error"] = "Product Is Already Added.";
+                    return RedirectToAction("SaveUpdateBill", new { id = bill.customerMst.pk_CustId });
+                }
 
-            if (Convert.ToInt32(bill.pk_tempbillID) == 0)
-            {
-                BillsItemTemp tempItem = new BillsItemTemp();
+                if (Convert.ToInt32(bill.pk_tempbillID) == 0)
+                {
+                    BillsItemTemp tempItem = new BillsItemTemp();
 
-                tempItem.Fk_ProductId = bill.fk_prodID;
-                tempItem.prodQuantity = bill.prodQuantity;
-                tempItem.price = bill.price;
-                tempItem.fk_custId = bill.customerMst.pk_CustId;
-                tempItem.Username = username;
+                    tempItem.Fk_ProductId = bill.fk_prodID;
+                    tempItem.prodQuantity = bill.prodQuantity;
+                    tempItem.price = bill.price;
+                    tempItem.fk_custId = bill.customerMst.pk_CustId;
+                    tempItem.Username = username;
 
-                context.BillsItemTemps.Add(tempItem);
-                context.SaveChanges();
+                    context.BillsItemTemps.Add(tempItem);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    var iteminDb = context.BillsItemTemps.FirstOrDefault(a => a.id == bill.pk_tempbillID);
+                    iteminDb.Fk_ProductId = bill.fk_prodID;
+                    iteminDb.prodQuantity = bill.prodQuantity;
+                    iteminDb.price = bill.price;
+                    context.SaveChanges();
+                }
+
+
+
+
+
+                return RedirectToAction("TempBillList", new { id = bill.customerMst.pk_CustId });
             }
             else
             {
-                var iteminDb = context.BillsItemTemps.FirstOrDefault(a => a.id == bill.pk_tempbillID);
-                iteminDb.Fk_ProductId = bill.fk_prodID;
-                iteminDb.prodQuantity = bill.prodQuantity;
-                iteminDb.price = bill.price;
-                context.SaveChanges();
+                TempData["Error"] = "Fill all Values";
+                return RedirectToAction("SaveUpdateBill",bill);
             }
-
-
-
-
-
-            return RedirectToAction("TempBillList", new { id = bill.customerMst.pk_CustId });
+            
 
 
         }
