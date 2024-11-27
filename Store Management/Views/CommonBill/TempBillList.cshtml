@@ -21,7 +21,7 @@
 <p>
     @Html.ActionLink("Add More Items", "SaveUpdateBill", new { id = Model.CustomerMst.pk_CustId }, new { @class = "btn btn-primary" })
     <a href="@Url.Action("GenearateBill", "Processbill",new { pk_custid = Model.CustomerMst.pk_CustId })" class="btn btn-primary"
-       onclick="setTimeout(function(){ window.location.href = '/Customer/CustomerList'; }, 10000);">
+       onclick="setTimeout(function(){ window.location.href = '/Customer/CustomerList'; }, 5000);">
         Download Bill
     </a>
 
