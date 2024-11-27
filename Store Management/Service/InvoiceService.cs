@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Http;
 using Microsoft.SqlServer.Server;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Fields;
@@ -13,16 +14,27 @@ using System.Collections.Generic;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Linq;
 using System.Web;
+using HttpContext = System.Web.HttpContext;
 
 namespace Store_Management.Service
 {
     public class InvoiceService
     {
-        public PdfDocument GetInvoice(PrintBillDTO printBillDTO)
+        
+
+        
+
+        public PdfDocument GetInvoice(PrintBillDTO printBillDTO,UserDTO userDTO)
         {
+
+            
+
+            // Retrieve seller details using UserManager
+            
+
             var document = new Document();
 
-            BuildDocument(document,printBillDTO);
+            BuildDocument(document,printBillDTO, userDTO);
 
             var pdfRenderer = new PdfDocumentRenderer();
             pdfRenderer.Document = document;
@@ -33,7 +45,7 @@ namespace Store_Management.Service
             return pdfRenderer.PdfDocument;
         }
 
-        public void BuildDocument(Document document,PrintBillDTO printBillDTO)
+        public void BuildDocument(Document document,PrintBillDTO printBillDTO,UserDTO s)
         {
             Section section = document.AddSection();
 
@@ -47,8 +59,18 @@ namespace Store_Management.Service
             para.AddText("Phone: +91-706-650-1610");
             para.Format.SpaceAfter = 20;
 
+             para = section.AddParagraph();
+            para.AddText(s.BusinessName);
+            para.AddLineBreak();
+            para.AddText(s.Ownername);
+            para.AddLineBreak();
+            para.AddText($"Email : {s.Email}");
+            para.AddLineBreak();
+            para.AddText($"Phone : {s.Phone}");
+            para.Format.SpaceAfter = 20;
 
-            para=section.AddParagraph();
+
+            para =section.AddParagraph();
             para.AddText($"Invoiceno");
             para.AddLineBreak();
             para.Add(new DateField { Format = "yyyy/MM/dd HH:mm:ss" });
@@ -99,7 +121,7 @@ namespace Store_Management.Service
             para.Format.SpaceBefore = 10;
 
             para = section.Footers.Primary.AddParagraph();
-            para.AddText($"  ");
+            para.AddText($"{s.Address}");
             para.Format.Alignment = ParagraphAlignment.Center;
 
 

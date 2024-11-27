@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Store_Management.Common;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Store_Management.Common;
 
 namespace Store_Management.Models
 {
@@ -12,18 +12,18 @@ namespace Store_Management.Models
     public class ApplicationUser : IdentityUser
     {
         [Required]
-        public string Address {  get; set; }
+        public string Address { get; set; }
 
         [Required]
-        [Display(Name ="Owner Full Name")]
+        [Display(Name = "Owner Full Name")]
         public string OwnerName { get; set; }
 
         [Required]
         public string BusinessName { get; set; }
 
-        
 
-        
+
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -46,9 +46,9 @@ namespace Store_Management.Models
         }
 
         public DbSet<ProductType> ProductTypes { get; set; }
-        public  DbSet<ProductMst>  ProductMsts{ get; set; }
+        public DbSet<ProductMst> ProductMsts { get; set; }
         public DbSet<ModuleMst> ModuleMsts { get; set; }
-        public DbSet<CustomerMst> CustomerMsts  { get; set; }
+        public DbSet<CustomerMst> CustomerMsts { get; set; }
         public DbSet<BillsItemTemp> BillsItemTemps { get; set; }
         public DbSet<ProcessBill> ProcessBills { get; set; }
 

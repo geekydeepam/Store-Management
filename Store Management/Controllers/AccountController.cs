@@ -21,9 +21,7 @@ namespace Store_Management.Controllers
         private ApplicationUserManager _userManager;
         ApplicationDbContext context = new ApplicationDbContext();
 
-        public AccountController()
-        {
-        }
+        
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {

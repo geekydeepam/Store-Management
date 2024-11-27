@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using PdfSharp.Pdf.Advanced;
 using Store_Management.Common;
 using Store_Management.DTO;
@@ -20,11 +21,23 @@ namespace Store_Management.Controllers
     [Authorize]
     public class ProcessBillController : Controller
     {
-        ApplicationDbContext context;
+        private readonly ApplicationDbContext context;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        // Default constructor
         public ProcessBillController()
         {
             context = new ApplicationDbContext();
+            _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
         }
+
+        // Overloaded constructor for testing or DI frameworks
+        public ProcessBillController(UserManager<ApplicationUser> userManager)
+        {
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+        }
+        private string username => User.Identity.IsAuthenticated ? User.Identity.GetUserName() : null;
+
 
         private int ProcessBillList(List<BillsItemTemp> ProductForProcess)
         {
@@ -38,7 +51,7 @@ namespace Store_Management.Controllers
                 itemForAdd.fk_productId = item.Fk_ProductId;
                 itemForAdd.PrductCurrentPrice = item.price;
                 itemForAdd.ProductQuantity = item.prodQuantity;
-                itemForAdd.username = User.Identity.Name;
+                itemForAdd.username = username;
                 context.ProcessBills.Add(itemForAdd);
                 context.SaveChanges();
 
@@ -129,7 +142,9 @@ namespace Store_Management.Controllers
         public ActionResult GenearateBill(int pk_custid)
         {
 
-            var address=User.Identity.Name;
+            var id= (User.Identity.GetUserId());
+            var user = _userManager.FindById(id);
+            var name=user.UserName;
 
             List<BillsItemTemp> ProductForProcess = new List<BillsItemTemp>();
             if (User.IsInRole("Admin"))
@@ -138,12 +153,12 @@ namespace Store_Management.Controllers
             }
             else
             {
-                ProductForProcess = context.BillsItemTemps.Where(a => a.fk_custId == pk_custid && a.Username == User.Identity.Name).ToList();
+                ProductForProcess = context.BillsItemTemps.Where(a => a.fk_custId == pk_custid && a.Username == name).ToList();
             }
 
             int trnId = ProcessBillList(ProductForProcess);
 
-            var invoiceService = new InvoiceService();
+            var inv=new InvoiceService();
 
 
 
@@ -152,7 +167,17 @@ namespace Store_Management.Controllers
             printBillDTO.TotalPrice = printBillDTO.ProcessBillDto.Sum(a => a.PiceByQuantity);
             printBillDTO.CustomerMst = context.CustomerMsts.FirstOrDefault(a => a.pk_CustId == pk_custid);
 
-            var document = invoiceService.GetInvoice(printBillDTO);
+            
+            UserDTO userDTO = new UserDTO()
+            {
+                BusinessName = user.BusinessName,
+                Ownername=user.OwnerName,
+                Phone=user.PhoneNumber,
+                Address=user.Address,
+                Email=user.Email,
+            };
+
+            var document = inv.GetInvoice(printBillDTO,userDTO);
 
 
 

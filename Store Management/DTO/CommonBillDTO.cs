@@ -14,13 +14,18 @@ namespace Store_Management.DTO
             ProductList = new List<ProductDDD_dto>();
         }
         public int pk_tempbillID  { get; set; }
+
         [Required]
         public int fk_prodID { get; set; }
+
         [Required]
         public double prodQuantity { get; set; }
-        
+
+        [Required]
         public double price { get; set; }
+
         public CustomerMst customerMst { get; set; }
+
         public IEnumerable<ProductDDD_dto> ProductList { get; set; }
     }
 }
