@@ -1,4 +1,5 @@
-﻿using Store_Management.DTO;
+﻿using Microsoft.AspNet.Identity;
+using Store_Management.DTO;
 using Store_Management.Models;
 using System;
 using System.Collections.Generic;
@@ -33,9 +34,11 @@ namespace Store_Management.Controllers
         [HttpPost]
         public ActionResult AddUpdateProduct(ProductMstDTO ptDTO)
         {
+            
+
             if(ptDTO.ProductMst.pk_ProductID==0)
             {
-                ptDTO.ProductMst.Username= User.Identity.Name;
+                ptDTO.ProductMst.Username= User.Identity.GetUserName();
                 context.ProductMsts.Add(ptDTO.ProductMst);
                 context.SaveChanges();
             }
@@ -48,6 +51,7 @@ namespace Store_Management.Controllers
                 dataInDb.ProductQuantity = ptDTO.ProductMst.ProductQuantity;
                 dataInDb.OriginalPrice = ptDTO.ProductMst.OriginalPrice;
                 dataInDb.SellingPrice = ptDTO.ProductMst.SellingPrice;
+                dataInDb.MinQuantity = ptDTO.ProductMst.MinQuantity;
                 context.SaveChanges();
             }
             

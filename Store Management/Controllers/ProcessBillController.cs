@@ -126,7 +126,8 @@ namespace Store_Management.Controllers
                     productType = c.Description,
                     productRate = b.SellingPrice,
                     fk_custid = a.fk_custid,
-                    PiceByQuantity = a.PrductCurrentPrice
+                    PiceByQuantity = a.PrductCurrentPrice,
+                    trnid=trnId
                 }
             ).ToList();
 

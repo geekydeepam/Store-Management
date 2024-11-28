@@ -54,9 +54,9 @@ namespace Store_Management.Service
             para.AddLineBreak();
             para.AddText("Website: www.storeManagement.com");
             para.AddLineBreak();
-            para.AddText($"Email:ddilipduley@gmail.com ");
+            para.AddText($"Email:ddiliduley@gmail.com ");
             para.AddLineBreak();
-            para.AddText("Phone: +91-706-650-1610");
+            para.AddText("Phone: +91-706-550-1610");
             para.Format.SpaceAfter = 20;
 
              para = section.AddParagraph();
@@ -69,9 +69,10 @@ namespace Store_Management.Service
             para.AddText($"Phone : {s.Phone}");
             para.Format.SpaceAfter = 20;
 
+            List<ProcessBillDTO> products = new List<ProcessBillDTO>(printBillDTO.ProcessBillDto);
 
             para =section.AddParagraph();
-            para.AddText($"Invoiceno");
+            para.AddText($"{printBillDTO.CustomerMst.Name}_{products.Select(p => p.trnid).FirstOrDefault()}");
             para.AddLineBreak();
             para.Add(new DateField { Format = "yyyy/MM/dd HH:mm:ss" });
             para.Format.SpaceAfter = 10;
@@ -83,7 +84,7 @@ namespace Store_Management.Service
             para.Format.SpaceAfter = 20;
 
 
-            List<ProcessBillDTO> products = new List<ProcessBillDTO>(printBillDTO.ProcessBillDto);
+            
 
             var table=document.LastSection.AddTable();
             table.Borders.Width = 0.5;

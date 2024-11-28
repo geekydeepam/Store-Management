@@ -1,68 +1,90 @@
 ﻿@model Store_Management.DTO.ProductMstDTO
 
 @{
-    ViewBag.Title = "AddUpdateProduct";
+    string title = "";
+}
+
+@if (Model == null)
+{
+    title = "New Product";
+}
+else
+{
+    title = "Update Product";
+}
+@{
+    ViewBag.Title =title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>AddUpdateProduct</h2>
+<h2>@title  </h2>
 
-@using (Html.BeginForm("AddUpdateProduct","Product")) 
+@using (Html.BeginForm("AddUpdateProduct", "Product"))
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        
 
-        <div class="form-group">   
-            @Html.LabelFor(model => model.ProductMst.fk_ProductID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ProductMst.fk_ProductID, new SelectList(Model.ProductTypeListMst, "pk_prodtypeid","Description",0),
-                 "--Select Product Type--",new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ProductMst.fk_ProductID, "", new { @class = "text-danger" })
-            </div>
-        </div>
+<div class="form-horizontal">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProductMst.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ProductMst.ProductName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ProductMst.ProductName, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProductMst.OriginalPrice, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ProductMst.OriginalPrice, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ProductMst.OriginalPrice, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProductMst.SellingPrice, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ProductMst.SellingPrice, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ProductMst.SellingPrice, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProductMst.ProductQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ProductMst.ProductQuantity, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ProductMst.ProductQuantity, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @Html.HiddenFor(model=>model.ProductMst.pk_ProductID)
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        @Html.Label("Product Type", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.ProductMst.fk_ProductID, new SelectList(Model.ProductTypeListMst, "pk_prodtypeid", "Description", 0),
+             "--Select Product Type--", new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProductMst.fk_ProductID, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.Label("Product Name", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ProductMst.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProductMst.ProductName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Original Price", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ProductMst.OriginalPrice, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProductMst.OriginalPrice, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Selling Price", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ProductMst.SellingPrice, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProductMst.SellingPrice, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Product Quantity", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ProductMst.ProductQuantity, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProductMst.ProductQuantity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        
+        @Html.Label("Product Min Quantity ", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("(to get Notified when Stock Reaches below this Quantity)",htmlAttributes: new { @class = "text-sm-center text-danger" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ProductMst.MinQuantity, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProductMst.MinQuantity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @Html.HiddenFor(model => model.ProductMst.pk_ProductID)
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-primary mt-2 " />
+        </div>
+    </div>
+</div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "ProductList")
+    @Html.ActionLink("Back to List", "ProductList", null, new { @class = "btn btn-secondary mt-3" })
 </div>

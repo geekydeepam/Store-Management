@@ -1,0 +1,61 @@
+﻿@model Store_Management.DTO.DashboardViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2></h2>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Welcome back, @Model.username!</h1>
+            <p>Here's an overview of your business:</p>
+        </div>
+    </div>
+
+    <!-- Dashboard Metrics -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Total Sales Today</h4>
+                    <p>@Model.TotalSalesToday.ToString("C")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Invoices Generated</h4>
+                    <p>@Model.InvoicesGenerated</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h4>Notifications</h4>
+            <ul class="text-danger">
+                @foreach (var notification in Model.Notifications)
+                {
+                    <li>@notification</li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h4>Quick Actions</h4>
+            <a href="@Url.Action("Create", "Invoice")" class="btn btn-primary">Create Invoice</a>
+            <a href="@Url.Action("ProductList", "Product")" class="btn btn-secondary">Manage Products</a>
+            <a href="@Url.Action("CustomerList", "Customer")" class="btn btn-success">Manage Customers</a>
+        </div>
+    </div>
+</div>

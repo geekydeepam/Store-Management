@@ -1,22 +1,35 @@
 ﻿@model Store_Management.DTO.CustomerDTO
 
+
+@{ 
+    string title = "";
+}
+
+@if(Model==null)
+{
+     title = "New Customer";
+}
+else
+{
+     title = "Update Customer";
+}
 @{
-    ViewBag.Title = "SaveUpdateCustomer";
+    ViewBag.Title = title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>SaveUpdateCustomer</h2>
+<h2>@title</h2>
 
 @using (Html.BeginForm("SaveUpdateCustomer","Customer")) 
 {
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>CustomerMst</h4>
+    <h4></h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
-        @Html.LabelFor(model => model.Customer.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("Customer Name", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.Customer.Name, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Customer.Name, "", new { @class = "text-danger" })
@@ -26,7 +39,7 @@
 
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Customer.MobNo, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("Customer Mobile Number", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.Customer.MobNo, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Customer.MobNo, "", new { @class = "text-danger" })
@@ -35,12 +48,12 @@
     @Html.HiddenFor(model => model.Customer.pk_CustId)
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
+            <input type="submit" value="Save" class="btn btn-primary mt-2" />
         </div>
     </div>
 </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "CustomerList")
+    @Html.ActionLink("Back to List", "CustomerList",null,new {@class="btn btn-secondary mt-3"})
 </div>

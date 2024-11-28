@@ -264,6 +264,7 @@
     <Compile Include="Controllers\UserHomeController.cs" />
     <Compile Include="DTO\BillItemTempDTO.cs" />
     <Compile Include="DTO\CommonBillDTO.cs" />
+    <Compile Include="DTO\DashboardViewModel.cs" />
     <Compile Include="DTO\PrintBillDTO.cs" />
     <Compile Include="DTO\ProcessBillDTO.cs" />
     <Compile Include="DTO\ProductDDD_dto.cs" />
@@ -334,6 +335,10 @@
     <Compile Include="Migrations\202411261431421_Added_Business-name.cs" />
     <Compile Include="Migrations\202411261431421_Added_Business-name.Designer.cs">
       <DependentUpon>202411261431421_Added_Business-name.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411281100097_Product_minQuantity.cs" />
+    <Compile Include="Migrations\202411281100097_Product_minQuantity.Designer.cs">
+      <DependentUpon>202411281100097_Product_minQuantity.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -672,6 +677,7 @@
     <Content Include="Views\CommonBill\SaveUpdateBill.cshtml" />
     <Content Include="Views\CommonBill\TempBillList.cshtml" />
     <Content Include="Views\ProcessBill\PrintBill.cshtml" />
+    <Content Include="Views\UserHome\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -748,6 +754,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202411261431421_Added_Business-name.resx">
       <DependentUpon>202411261431421_Added_Business-name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411281100097_Product_minQuantity.resx">
+      <DependentUpon>202411281100097_Product_minQuantity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
